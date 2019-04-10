@@ -19,19 +19,23 @@ $todos = getAllTodo();
                         <th scope="col">Task</th>
                         <th scope="col">Done</th>
                         <th scope="col">Created at</th>
+                        <th scope="col">Updated at</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($todos as $todo) {
-                        $task_date = $todo["created_at"];
-                        $date = new DateTime($task_date);
+                        $task_date_created = $todo["created_at"];
+                        $task_date_updated = $todo["updated_at"];
+                        $dateCreated = new DateTime($task_date_created);
+                        $dateUpdated = new DateTime($task_date_updated);
                     ?>
                         <tr>
                             <th scope="row"><?= $todo["id"]; ?></th>
                             <td><?= $todo["task"]; ?></td>
                             <td><?= ($todo["done"] == 0)? "NON":"OUI"; ?></td>
-                            <td><?= $date->format('d/m/Y'); ?></td>
+                            <td><?= $dateCreated->format('H:i d/m/Y'); ?></td>
+                            <td><?= $dateUpdated->format('H:i d/m/Y'); ?></td>
                             <td class="row">
 
                                 <a href="/edit.php?id=<?= $todo["id"]; ?>">
