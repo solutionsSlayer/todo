@@ -5,9 +5,19 @@ $page = 'accueil';
 include "./includes/head.php";
 
 $task = (isset($_POST["task"]) && !empty($_POST["task"]))? $_POST["task"] : null;
+$file = (isset($_FILES["imgTodo"]["name"]) && !empty($_FILES["imgTodo"]["name"])) ? $_FILES["imgTodo"] : null;
 
 if( $_SERVER["REQUEST_METHOD"] == "POST" && $task){
-    if(createTodo($task)){
+    $target_file = null;
+    if($file){
+        $target_dir = "./uploads/";
+        $imageFileType = strtolower(pathinfo($file["name"],PATHINFO_EXTENSION));
+        $imageFileName = strtolower(pathinfo($file["name"],PATHINFO_FILENAME));
+        $time = time();
+        $target_file = $target_dir . $imageFileName . "-" . $time .".". $imageFileType;
+        move_uploaded_file($file["tmp_name"], $target_file);
+    }
+    if(createTodo($task, $target_file)){
         header("Location: index.php");
         exit();
     };
@@ -16,14 +26,20 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" && $task){
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-8 mt-5">
-            <form action="<?= $_SERVER['PHP_SELF'];?>" method="post">
+            <form action="<?= $_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="task">Libellé</label>
+                    <label for="task">Libellé :</label>
                     <input type="text"
                            class="form-control"
                            id="task" name="task"
                            placeholder="tâche à faire"
                            required />
+                </div>
+                <div class="form-group">
+                    <label for="task">Ajouter une image :</label>
+                    <input type="file"
+                           class="form-control-file"
+                           id="imgTodo" name="imgTodo" />
                 </div>
                 <div class="form-group">
                     <a href="/index.php">

@@ -16,6 +16,7 @@ $todos = getAllTodo();
                     <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col"></th>
                         <th scope="col">Task</th>
                         <th scope="col">Done</th>
                         <th scope="col">Created at</th>
@@ -32,6 +33,11 @@ $todos = getAllTodo();
                     ?>
                         <tr>
                             <th scope="row"><?= $todo["id"]; ?></th>
+                            <td style="max-width: 120px;"><img <?=
+                                !empty($todo["imgPath"]) ?
+                                    'src="'.$todo["imgPath"].'"' :
+                                    'src="./images/default.jpg"' ; ?>
+                                class="img-thumbnail" /></td>
                             <td><?= $todo["task"]; ?></td>
                             <td><?= ($todo["done"] == 0)? "NON":"OUI"; ?></td>
                             <td><?= $dateCreated->format('H:i d/m/Y'); ?></td>

@@ -20,11 +20,10 @@ function getAllTodo(){
     return $todos;
 }
 
-function createTodo($task){
+function createTodo($task, $target_file = null){
     $con = getConnexion();
-    $query = $con->prepare("INSERT INTO todo (`id`,`task`,`done`) VALUES (NULL, :task, false)");
-
-    return $query->execute(array(':task'=>$task));
+    $query = $con->prepare("INSERT INTO todo (`id`,`task`,`done`,`imgPath`) VALUES (NULL, :task, false, :imgPath)");
+    return $query->execute(array(':task'=>$task, ':imgPath'=> $target_file));
 }
 
 function getTodoById($id){
@@ -42,7 +41,17 @@ function updateTodo($id, $task){
     return $result;
 }
 
+function deleteImg($path){
+    if(file_exists($path)){
+        unlink($path);
+    }
+}
+
 function deleteTodo($id){
+    $todo = getTodoById($id);
+    if (!empty($todo['imgPath'])){
+        deleteImg($todo['imgPath']);
+    }
     $con = getConnexion();
     $query = $con->prepare("DELETE FROM todo WHERE id = :id");
     $query->execute(array(":id"=>$id));
