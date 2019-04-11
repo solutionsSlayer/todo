@@ -34,10 +34,28 @@ function getTodoById($id){
     return $todo;
 }
 
-function updateTodo($id, $task){
+function updateTodo($id, $task, $imgPath = null, $forceDelete = false){
     $con = getConnexion();
     $query = $con->prepare("UPDATE todo SET `task`= :task WHERE `id`= :id");
-    $result = $query->execute(array(":id"=>$id, ":task"=>$task));
+    $params = array(":id"=>$id, ":task"=>$task);
+    if (!empty($imgPath) && !$forceDelete){
+        $todo = getTodoById($id);
+        if (!empty($todo['imgPath'])){
+            deleteImg($todo['imgPath']);
+        }
+        $query = $con->prepare("UPDATE todo SET `task`= :task , `imgPath`= :imgPath WHERE `id`= :id");
+        $params[":imgPath"] = $imgPath;
+    }
+    if (empty($imgPath) && $forceDelete){
+        $todo = getTodoById($id);
+        if (!empty($todo['imgPath'])){
+            deleteImg($todo['imgPath']);
+        }
+        $query = $con->prepare("UPDATE todo SET `task`= :task , `imgPath`= :imgPath WHERE `id`= :id");
+        $params[":imgPath"] = $imgPath;
+    }
+
+    $result = $query->execute($params);
     return $result;
 }
 

@@ -1,7 +1,7 @@
 <?php
 require "./requires/function.php";
 
-$page = 'accueil';
+$page = 'création';
 include "./includes/head.php";
 
 $task = (isset($_POST["task"]) && !empty($_POST["task"]))? $_POST["task"] : null;
