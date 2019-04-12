@@ -40,6 +40,17 @@ $todos = getAllTodo();
                                 class="img-thumbnail" /></td>
                             <td><?= $todo["task"]; ?></td>
                             <td><?= ($todo["done"] == 0)? "NON":"OUI"; ?></td>
+                            <td>
+
+                                <!-- Default switch -->
+
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" name="check" class="custom-control-input get_value" id="<?= $todo["id"]; ?>">
+                                        <label class="custom-control-label" for="<?= $todo["id"]; ?>">Toggle this switch element</label>
+                                        <div id="result"></div>
+                                    </div>
+
+                            </td>
                             <td><?= $dateCreated->format('H:i d/m/Y'); ?></td>
                             <td><?= $dateUpdated->format('H:i d/m/Y'); ?></td>
                             <td class="row">
@@ -75,7 +86,7 @@ $todos = getAllTodo();
 
 <?php
 
-$scripts = ["jquery.min.js", "popperjs.min.js", "bootstrap.min.js"];
+$scripts = ["jquery.min.js", "popperjs.min.js", "bootstrap.min.js", "script-edit.js"];
 include "./includes/footer.php";
 
 ?>

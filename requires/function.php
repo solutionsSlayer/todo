@@ -15,8 +15,6 @@ function getAllTodo(){
     while($row = $query->fetch(PDO::FETCH_ASSOC)){
         array_push($todos, $row);
     }
-
-
     return $todos;
 }
 
@@ -25,6 +23,8 @@ function createTodo($task, $target_file = null){
     $query = $con->prepare("INSERT INTO todo (`id`,`task`,`done`,`imgPath`) VALUES (NULL, :task, false, :imgPath)");
     return $query->execute(array(':task'=>$task, ':imgPath'=> $target_file));
 }
+
+
 
 function getTodoById($id){
     $con = getConnexion();
@@ -63,6 +63,7 @@ function deleteImg($path){
     if(file_exists($path)){
         unlink($path);
     }
+
 }
 
 function deleteTodo($id){
